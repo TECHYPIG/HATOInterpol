@@ -1,0 +1,86 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: 
+		linear-gradient(
+		rgba(0, 0, 0, 0.1),
+		rgba(0, 0, 0, 0.1)
+		),
+		url(../img/loginbackground.jpg);
+	background-size: cover;
+	background-position: center;
+}
+.logoimg{
+	
+	width: 150px;
+  height: 150px;
+}
+.logo{
+	width:300px;
+}
+.login {
+	background-color: rgba(0,0,0,0.70);
+	width: 300px;
+	height: 450px;
+	margin: 100px auto 50px;
+	padding: 5px 15px;
+	border-radius: 3px;
+	color: #B5B5B5;
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	text-align: center;
+}
+
+.login a {
+	color: #777777;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.login a:hover {
+	color: #1A7200;
+}
+
+.login .logo {
+	margin: auto;
+	text-align: center;
+}
+
+.login .error h4 {
+	font-size: 17px;
+	line-height: 20px;
+	margin: 0px;
+}
+
+.login .error span {
+	font-size: 14px;
+}
+
+.login .form form {
+	text-align: center;
+	margin: 15px 0px 0px;
+}
+
+.login .form form input {
+	padding: 10px 10px;
+	margin: 8px;
+	border: none;
+	width: 230px;
+}
+
+.login .form form [type="submit"] {
+	width: 100px;
+	border-radius: 999px;
+	border: 1px solid white;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login .form form [type="submit"]:hover {
+	background-color: rgba(0,0,0,0.00);
+	color: white;
+	cursor: pointer;
+}
+
+.login .info {
+	padding: 20px;
+}

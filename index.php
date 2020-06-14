@@ -1,494 +1,141 @@
 <?php
-include('getinfo.php');
+include('SteamLogin.php');
+	session_start();
+	$error = "";
+	//$rerror = $_GET['error'];
+	//$success = $_GET['success'];
+	
+    if (array_key_exists("submit", $_POST)) {
+		$link = mysqli_connect("localhost", "blackro5_techypig", "K6BG!HXbx&*a", "blackro5_webusers");
+		if (mysqli_connect_error()) {
+			die ("Database Connection Error! Please contact a system administrator.");
+		}
+		
+		
+		if(!$_POST['username']) {
+			$error .= "<span>Please enter your username.</span><br>";
+		}
 
-$numisu = "0";
-$numjo = "0";
-$numto = "0";
-$numsooc = "0";
+		if(!$_POST['password']) {
+			$error .= "<span>Please enter your password.</span><br>";
+		}
 
-$chaisu = "0";
-$chajo = "0";
-$chato = "0";
-$chasooc = "0";
+		if ($error !="") {
+			$error = "<h4>There were errors in your form:</h4>".$error;
+		} else {
+			$query = "SELECT * FROM `users` WHERE username = '".mysqli_real_escape_string($link, $_POST['username'])."'";
+			$result = mysqli_query($link, $query);
+			$row = mysqli_fetch_array($result);
+			if($row['verified'] == 0){
+				$error .= "<span>Please verify your account via your email.</span><br>";
+			}else{
+				if($row['approved'] == 0){
+				if (array_key_exists("id", $row)) {
+					$hashedPassword = md5(md5($row['id']).$_POST['password']);
+					if ($hashedPassword == $row['password']) {
+						$_SESSION['id'] = $row['id'];
 
-
-
+						
+							setcookie("id", $row['hash'], time() + 60*60*24*365);
+						
+						//$_SESSION['logged_in'] = true;
+						header("Location: dashboard.php");
+					}
+				}
+				}else{
+					$error = "<span>This website is currently under construction. If you think you should have access to this page please contact an admin. </span".$error;
+				}
+			}
+		}
+	}
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-	<!-- Mirrored from colorlib.com/polygon/admindek/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2019 16:07:52 GMT -->
-	<!-- Added by HTTrack -->
-	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-	<!-- /Added by HTTrack -->
+<html>
 	<head>
-		<title>GTA | HATO Dashboard</title>
-		<!--[if lt IE 10]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="">
-		<meta name="author" content="" />
-		
-		<link rel="icon" href="https://colorlib.com/polygon/admindek/files/assets/images/favicon.ico" type="image/x-icon">
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
-		
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/waves.min.css" type="text/css" media="all">
-		<link rel="stylesheet" type="text/css" href="css/feather.css">
-		<link rel="stylesheet" type="text/css" href="css/font-awesome-n.min.css">
-		<link rel="stylesheet" href="css/chartist.css" type="text/css" media="all">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/widget.css">
+		<title>Login | BRG Portal</title>
+		<link rel="icon" href="img/hato_logo.png" type="image/x-icon"/>
+		<link href="css/login.css" type="text/css" rel="stylesheet">
+		<link href="css/fonts.html" type="text/css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="loader-bg">
-			<div class="loader-bar"></div>
-		</div>
-		<div id="pcoded" class="pcoded">
-			<div class="pcoded-overlay-box"></div>
-			<div class="pcoded-container navbar-wrapper">
-				<?php include("navigation.php");?>
-						<div class="pcoded-content">
-							<div class="page-header card">
-								<div class="row align-items-end">
-									<div class="col-lg-8">
-										<div class="page-header-title">
-											<i class="feather icon-home bg-c-blue"></i>
-											<div class="d-inline">
-												<h5>HATO | Dashboard</h5>
-												<span>GrandTheftArma</span>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="page-header-breadcrumb">
-											<ul class=" breadcrumb breadcrumb-title">
-												<li class="breadcrumb-item">
-													<a href="index.html"><i class="feather icon-home"></i></a>
-												</li>
-												<li class="breadcrumb-item"><a href="#!">HATO | Dashboard</a> </li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="pcoded-inner-content">
-								<div class="main-body">
-									<div class="page-wrapper">
-										<div class="page-body">
-											<div class="row">
-												<div class="col-xl-3 col-md-6">
-													<div class="card prod-p-card card-green">
-														<div class="card-body" style="background-color: #36393F;">
-															<div class="row align-items-center m-b-30">
-																<div class="col">
-																	<h6 class="m-b-5 text-white">Incident Support Units</h6>
-																	<h3 class="m-b-0 f-w-700 text-white"><?= $numisu ?></h3>
-																</div>
-																<div class="col-auto">
-																	<i class="fas fa-users text-c-green f-18"></i>
-																</div>
-															</div>
-															<p class="m-b-0 text-white"><span class="label label-primary m-r-10">+<?= $chaisu ?></span>From Previous Week</p>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-3 col-md-6">
-													<div class="card prod-p-card card-yellow">
-														<div class="card-body"style="background-color: #36393F;">
-															<div class="row align-items-center m-b-30">
-																<div class="col">
-																	<h6 class="m-b-5 text-white">Junior Traffic Officers</h6>
-																	<h3 class="m-b-0 f-w-700 text-white"><?= $numjo ?></h3>
-																</div>
-																<div class="col-auto">
-																	<i class="fas fa-check-square text-c-yellow f-18"></i>
-																</div>
-															</div>
-															<p class="m-b-0 text-white"><span class="label label-primary m-r-10">+<?= $chajo ?></span>From Previous Week</p>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-3 col-md-6">
-													<div class="card prod-p-card card-blue">
-														<div class="card-body"style="background-color: #36393F;">
-															<div class="row align-items-center m-b-30">
-																<div class="col">
-																	<h6 class="m-b-5 text-white">Traffic Officer</h6>
-																	<h3 class="m-b-0 f-w-700 text-white"><?= $numto ?></h3>
-																</div>
-																<div class="col-auto">
-																	<i class="fas fa-car text-c-blue f-18"></i>
-																</div>
-															</div>
-															<p class="m-b-0 text-white"><span class="label label-primary m-r-10">+<?= $chato ?></span>From Previous Week</p>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-3 col-md-6">
-													<div class="card prod-p-card card-red">
-														<div class="card-body"style="background-color: #36393F;">
-															<div class="row align-items-center m-b-30">
-																<div class="col">
-																	<h6 class="m-b-5 text-white">Senior Officer On Call</h6>
-																	<h3 class="m-b-0 f-w-700 text-white"><?= $numsooc ?></h3>
-																</div>
-																<div class="col-auto">
-																	<i class="fas fa-bullhorn text-c-purple f-18"></i>
-																</div>
-															</div>
-															<p class="m-b-0 text-white"><span class="label label-primary m-r-10">+<?= $chasooc ?></span>From Previous Month</p>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-4 col-md-12">
-													<div class="card latest-update-card">
-														<div class="card-header">
-															<h5>Announcements</h5>
-															<div class="card-header-right">
-																<ul class="list-unstyled card-option">
-																	<li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
-																	<li><i class="feather icon-maximize full-card"></i></li>
-																	<li><i class="feather icon-minus minimize-card"></i></li>
-																	<li><i class="feather icon-refresh-cw reload-card"></i></li>
-																	<li><i class="feather icon-trash close-card"></i></li>
-																	<li><i class="feather icon-chevron-left open-card-option"></i></li>
-																</ul>
-															</div>
-														</div>
-														<div class="card-block">
-															<div class="scroll-widget">
-																<div class="latest-update-box">
-																	<div class="row p-t-20 p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>RTO Applications Are Open</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Wong Jr</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="feather icon-briefcase bg-c-red update-icon"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>HATO vs NHS postponed</h6>
-																			</a>
-																			<p class="text-muted m-b-0">beechie</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="feather icon-check f-w-600 bg-c-green update-icon"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>HATO vs NHS Event</h6>
-																			</a>
-																			<p class="text-muted m-b-0">beechie</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Made T/M</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Wong Jr</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="feather icon-briefcase bg-c-red update-icon"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>beechie Made O/M</h6>
-																			</a>
-																			<p class="text-muted m-b-0">beechie</p>
-																		</div>
-																	</div>
-																	<div class="row">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="feather icon-check f-w-600 bg-c-green update-icon"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Maxi Steps Down</h6>
-																			</a>
-																			<p class="text-muted m-b-0">BenS</p>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-4 col-md-6">
-													<div class="card latest-update-card">
-														<div class="card-header">
-															<h5>Useful Links</h5>
-															<div class="card-header-right">
-																<ul class="list-unstyled card-option">
-																	<li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
-																	<li><i class="feather icon-maximize full-card"></i></li>
-																	<li><i class="feather icon-minus minimize-card"></i></li>
-																	<li><i class="feather icon-refresh-cw reload-card"></i></li>
-																	<li><i class="feather icon-trash close-card"></i></li>
-																	<li><i class="feather icon-chevron-left open-card-option"></i></li>
-																</ul>
-															</div>
-														</div>
-														<div class="card-block">
-															<div class="scroll-widget">
-																<div class="latest-update-box">
-																	<div class="row p-t-20 p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-primary update-icon ring"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>HATO Handbook</h6>
-																			</a>
-																			<p class="text-muted m-b-0">HATO Rules and Requirements <a href="#!" class="text-c-blue"> More</a></p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-primary update-icon ring"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Suggestion Form</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Have a suggestion? <a href="#!" class="text-c-blue"> More</a></p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-success update-icon ring"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Feedback Form</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Give Someone Feedback <a href="#!" class="text-c-green"> More</a></p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-danger update-icon ring"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>LOA Form</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Fill out an LOA Form <a href="#!" class="text-c-red"> More</a></p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-primary update-icon ring"></i>
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Unblacklist Appeal</h6>
-																			</a>
-																			<p class="text-muted m-b-0">Make an Unblacklist Appeal <a href="#!" class="text-c-blue"> More</a></p>
-																		</div>
-																	</div>
-																	<div class="row">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<i class="b-success update-icon ring"></i>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-4 col-md-6">
-													<div class="card latest-update-card">
-														<div class="card-header">
-															<h5>Latest Activity</h5>
-															<div class="card-header-right">
-																<ul class="list-unstyled card-option">
-																	<li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
-																	<li><i class="feather icon-maximize full-card"></i></li>
-																	<li><i class="feather icon-minus minimize-card"></i></li>
-																	<li><i class="feather icon-refresh-cw reload-card"></i></li>
-																	<li><i class="feather icon-trash close-card"></i></li>
-																	<li><i class="feather icon-chevron-left open-card-option"></i></li>
-																</ul>
-															</div>
-														</div>
-														<div class="card-block">
-															<div class="scroll-widget">
-																<div class="latest-update-box">
-																	<div class="row p-t-20 p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																	<div class="row p-b-30">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																	<div class="row">
-																		<div class="col-auto text-right update-meta p-r-0">
-																			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg" alt="user image" class="img-radius img-40 align-top m-r-15 update-icon">
-																		</div>
-																		<div class="col p-l-5">
-																			<a href="#!">
-																				<h6>Wong Jr Joined</h6>
-																			</a>
-																			<p class="text-muted m-b-0">76561198122734048</p>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="styleSelector"></div>
-					</div>
+		<section class="login">
+			<div class="logo"><img class="logoimg" src="img/hato_logo.png"></div>
+			<?php
+			if(empty($rerror)){}else{
+				if($rerror == "1") {
+					echo "<span>Your verifiction has failed due to problems with the email.</span><br>";
+				}
+				if($rerror == "2") {
+					echo "<span>Your verifiction has failed due to problems with the your verificaiton code.</span><br>";
+				}
+				if($rerror == "3") {
+					echo "<span>Your verifiction has failed due to problems with our database. Database Connection Error! Please contact a system administrator.</span><br>";
+				}
+				if($rerror == "4") {
+					echo "<span>You need to login to your account before you can use that page.</span><br>";
+				}
+			}
+			if(empty($success)){}else{
+				if($success == "1") {
+					echo "<span>Your account has already been verified. You can now login.</span><br>";
+				}
+				if($success == "2") {
+					echo "<span>Your account has now been verified. You may now login. </span><br>";
+				}
+			}
+			?>
+			
+			<div class="error"><?php echo $error ?></div>
+			<div class="form">
+                <?php
+                
+                $url = SteamSignIn::genUrl('http://localhost/dashboard.php');
+
+                $response = SteamSignIn::validate();
+
+                if( empty( $response ) ) {
+
+                    echo '<a href= '.$url.' ><img style="margin-left:10px; margin-top:20px; " src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" alt="SteamLogin" height="auto" width="auto"></a>';
+                }
+                else {
+                    $link = mysqli_connect("185.141.207.138", "blackro5_techypig", "K6BG!HXbx&*a", "blackro5_HATO");
+                if (mysqli_connect_error()) {
+                    die ("Database Connection Error! Please contact a system administrator.");
+                }
+                $query = "INSERT INTO `users` (`steamid`) VALUES('".mysqli_real_escape_string($link, $response)."')";
+                mysqli_query($link, $query);
+                $query = "SELECT * FROM `users` WHERE steamid = '".mysqli_real_escape_string($link, $response)."'";
+                $result = mysqli_query($link, $query);
+                $row = mysqli_fetch_array($result);
+
+                if(empty($result)){
+                    $query = "INSERT INTO `users` (`steamid`) VALUES('".mysqli_real_escape_string($link, $response)."')";
+                    mysqli_query($link, $query);
+                }
+
+                  //  $query = "UPDATE users SET steamid = '".$response."' WHERE id = '".mysqli_real_escape_string($link, $id)."'";
+                   //         mysqli_query($link, $query);
+                    echo '<div style="color:white; width:200px; text-align:center; margin-top:20px; font-weight: normal; ">'.$response.'</div>'; // Community ID
+                    
+                    $steamid = $response;
+                    $steam_api = "F33E05D26D3B32A08300C83E6EA1C36E";
+                    $ret = file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $steam_api . '&steamids=' . $steamid);
+                    //$avatar =  ($ret, ["avatarfull"]);
+                    $ret = json_decode($ret, true); //because of true, it's in an array
+                    $avatar = $ret['response']['players'][0]['avatarfull'];
+                    $steamlink = $ret['response']['players'][0]['profileurl'];
+                    //$query = "UPDATE users SET avatar = '".$avatar."' WHERE id = '".mysqli_real_escape_string($link, $id)."'";
+                    //        mysqli_query($link, $query);
+                    //$query = "UPDATE users SET steamlink = '".$steamlink."' WHERE id = '".mysqli_real_escape_string($link, $id)."'";
+                   //         mysqli_query($link, $query);
+                    //("Refresh:0");
+                }
+                
+                ?>
+				<div class="info">
+					 GrandTheftArma 2020
 				</div>
 			</div>
-		</div>
-		<!--[if lt IE 10]>
-		<div class="ie-warning">
-			<h1>Warning!!</h1>
-			<p>You are using an outdated version of Internet Explorer, please upgrade
-				<br/>to any of the following web browsers to access this website.
-			</p>
-			<div class="iew-container">
-				<ul class="iew-download">
-					<li>
-						<a href="http://www.google.com/chrome/">
-							<img src="../files/assets/images/browser/chrome.png" alt="Chrome">
-							<div>Chrome</div>
-						</a>
-					</li>
-					<li>
-						<a href="https://www.mozilla.org/en-US/firefox/new/">
-							<img src="../files/assets/images/browser/firefox.png" alt="Firefox">
-							<div>Firefox</div>
-						</a>
-					</li>
-					<li>
-						<a href="http://www.opera.com">
-							<img src="../files/assets/images/browser/opera.png" alt="Opera">
-							<div>Opera</div>
-						</a>
-					</li>
-					<li>
-						<a href="https://www.apple.com/safari/">
-							<img src="../files/assets/images/browser/safari.png" alt="Safari">
-							<div>Safari</div>
-						</a>
-					</li>
-					<li>
-						<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-							<img src="../files/assets/images/browser/ie.png" alt="">
-							<div>IE (9 & above)</div>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<p>Sorry for the inconvenience!</p>
-		</div>
-		<![endif]-->
-		<script data-cfasync="false" src="js/email-decode.min.js"></script><script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/jquery.min.js"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/jquery-ui.min.js"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/popper.min.js"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/bootstrap.min.js"></script>
-		<script src="js/waves.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/jquery.slimscroll.js"></script>
-		<script src="js/jquery.flot.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/jquery.flot.categories.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/curvedlines.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/jquery.flot.tooltip.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/chartist.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/amcharts.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/serial.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/light.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/pcoded.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script src="js/vertical-layout.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/custom-dashboard.min.js"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="js/script.min.js"></script>
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-		<script type="d2d1d6e2f87cbebdf4013b26-text/javascript">
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			
-			gtag('config', 'UA-23581568-13');
-		</script>
-		<script src="js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
+		</section>
 	</body>
-	<!-- Mirrored from colorlib.com/polygon/admindek/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2019 16:08:25 GMT -->
 </html>
