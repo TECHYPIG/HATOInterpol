@@ -119,7 +119,9 @@
                               <div class="col-xl-4 col-md-6">
                                  <div class="card table-card">
                                     <div class="card-header">
-                                       <h5>New Products</h5>
+                                       <h5>Promotion Information
+                                           
+                                       </h5>
                                        <div class="card-header-right">
                                           <ul class="list-unstyled card-option">
                                              <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>

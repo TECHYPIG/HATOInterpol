@@ -7,8 +7,15 @@
         die ("Database Connection Error! Please contact a system administrator.");
     }
     $query = "INSERT INTO tbl_meetingnotes (`userid`, `note`) VALUES ('".mysqli_real_escape_string($link, $userid)."','".mysqli_real_escape_string($link, $message)."');";
-    
-    mysqli_query($link, $query);}
+    mysqli_query($link, $query);
+    }
+    if (array_key_exists("annouceid", $_GET)) {
+        $delannounce =  $_GET['annouceid'];
+        if(!empty($delannounce)){
+            $query = "UPDATE tbl_meetingnotes SET active = 0 WHERE id=('".mysqli_real_escape_string($link, $delannounce)."');";
+            mysqli_query($link, $query);
+        }
+    }
    ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,9 +149,9 @@
                                           <img src="jpg/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
                                           <div class="d-inline-block">
                                              <a href="#!">
-                                                <h6>Alex Thompson</h6>
+                                                <h6></h6>
                                              </a>
-                                             <p class="text-muted m-b-0">Cheers!</p>
+                                             <p class="text-muted m-b-0"></p>
                                           </div>
                                        </div>
                                     </div>

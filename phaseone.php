@@ -95,7 +95,7 @@ include('getinfo.php');
                                                                <label for="userName-2" class="block">Username *</label>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                               <input id="userName-2b" name="userName" type="text" class=" form-control">
+                                                               <input id="userName-2b" name="userName" type="text" autocomplete="off"class=" form-control">
                                                             </div>
                                                          </div>
                                                          <div class="form-group row">
@@ -103,7 +103,7 @@ include('getinfo.php');
                                                                <label for="email-2" class="block">SteamID *</label>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                               <input id="email-2b" name="email" type="email" class=" form-control">
+                                                               <input id="email-2b" name="steamid" type="text" autocomplete="off"class=" form-control">
                                                             </div>
                                                          </div>
                                                          <div class="form-group row">
@@ -111,7 +111,7 @@ include('getinfo.php');
                                                                <label for="password-2" class="block">Forum Application *</label>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                               <input id="password-2b" name="password" type="password" class="form-control ">
+                                                               <input id="password-2b" name="forumlink" type="text" autocomplete="off"class="form-control ">
                                                             </div>
                                                          </div>
                                                          <div class="form-group row">
@@ -119,7 +119,7 @@ include('getinfo.php');
                                                                <label for="confirm-2" class="block">Age *</label>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                               <input id="confirm-2b" name="confirm" type="password" class="form-control ">
+                                                               <input id="confirm-2b" name="age" type="text"autocomplete="off" class="form-control ">
                                                             </div>
                                                          </div>
                                                       </fieldset>
@@ -127,7 +127,7 @@ include('getinfo.php');
                                                       <fieldset>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="name-2" class="block">First name *</label>
+                                                               <label for="name-2" class="block">Why should we consider you into the Highways Agency?*</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="name-2b" name="name" type="text" class="form-control">
@@ -135,7 +135,7 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="surname-2" class="block">Last name *</label>
+                                                               <label for="surname-2" class="block">Whilst on-duty as HATO you witness someone Random Death-Matching other people, you also end up getting killed. What do you do? Are you allowed to return? *</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="surname-2b" name="surname" type="text" class="form-control">
@@ -143,7 +143,7 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="phone-2" class="block">Phone #</label>
+                                                               <label for="phone-2" class="block">You find yourself in a confrontation with rebels trying to rob you. How would you react?  #</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="phone-2b" name="phone" type="number" class="form-control phone">
@@ -151,23 +151,10 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="date" class="block">Date Of Birth</label>
+                                                               <label for="date" class="block">What is the speed limit on dirt roads?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="dateb" name="Date Of Birth" type="text" class="form-control date-control">
-                                                            </div>
-                                                         </div>
-                                                         <div class="form-group row">
-                                                            <div class="col-sm-12">Select Country</div>
-                                                            <div class="col-sm-12">
-                                                               <select class="form-control required">
-                                                                  <option>Select State</option>
-                                                                  <option>Gujarat</option>
-                                                                  <option>Kerala</option>
-                                                                  <option>Manipur</option>
-                                                                  <option>Tripura</option>
-                                                                  <option>Sikkim</option>
-                                                               </select>
                                                             </div>
                                                          </div>
                                                       </fieldset>
@@ -175,7 +162,7 @@ include('getinfo.php');
                                                       <fieldset>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="University-2" class="block">University</label>
+                                                               <label for="University-2" class="block">What would you do if you found a unlocked car in the middle of the road?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="University-2b" name="University" type="text" class="form-control required">
@@ -183,7 +170,7 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="Country-2" class="block">Country</label>
+                                                               <label for="Country-2" class="block">What would you do when you find a APC/Medical vehicle?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="Country-2b" name="Country" type="text" class="form-control required">
@@ -191,7 +178,7 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="Degreelevel-2" class="block">Degree level #</label>
+                                                               <label for="Degreelevel-2" class="block">What do the orange vehicle markers on the map represent?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="Degreelevel-2b" name="Degree level" type="text" class="form-control required phone">
@@ -199,7 +186,15 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="datejoin" class="block">Date Join</label>
+                                                               <label for="datejoin" class="block">Are you allowed to build/divert traffic into an active conflict zone?</label>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                               <input id="datejoinb" name="Date Of Birth" type="text" class="form-control required">
+                                                            </div>
+                                                         </div>
+                                                         <div class="form-group row">
+                                                            <div class="col-sm-12">
+                                                               <label for="datejoin" class="block">Are you required to send a reply to all dispatches?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="datejoinb" name="Date Of Birth" type="text" class="form-control required">
@@ -210,7 +205,7 @@ include('getinfo.php');
                                                       <fieldset>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="Company-2" class="block">Company:</label>
+                                                               <label for="Company-2" class="block">What is the procedure on impounding a car?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="Company-2b" name="Company:" type="text" class="form-control required">
@@ -218,7 +213,7 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="CountryW-2" class="block">Country</label>
+                                                               <label for="CountryW-2" class="block">What is the procedure on impounding a truck?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="CountryW-2b" name="Country" type="text" class="form-control required">
@@ -226,7 +221,15 @@ include('getinfo.php');
                                                          </div>
                                                          <div class="form-group row">
                                                             <div class="col-sm-12">
-                                                               <label for="Position-2" class="block">Position</label>
+                                                               <label for="Position-2" class="block">In the case of someone asking for help via the dispatch system, there are three types of responses you can give someone, can you tell what they are?</label>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                               <input id="Position-2b" name="Position" type="text" class="form-control required">
+                                                            </div>
+                                                         </div>
+                                                         <div class="form-group row">
+                                                            <div class="col-sm-12">
+                                                               <label for="Position-2" class="block">What do you think needs changing in the Highways Agency?</label>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                <input id="Position-2b" name="Position" type="text" class="form-control required">

@@ -149,7 +149,7 @@
 											</a>
 										</li>
 										<li class="">
-											<a href="index.html" class="waves-effect waves-dark">
+											<a href="rtologs.php" class="waves-effect waves-dark">
 											<span class="pcoded-micon">
 											<i class="feather icon-briefcase"></i>
 											</span>
@@ -214,6 +214,11 @@
 													</a>
 												</li>
 												<li class="">
+													<a href="lowactivity.php" class="waves-effect waves-dark">
+													<span class="pcoded-mtext">Low Activity</span>
+													</a>
+												</li>
+												<li class="">
 													<a href="veterans.php" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Veterans</span>
 													</a>
@@ -247,7 +252,7 @@
 													</a>
 												</li>
 												<li class="">
-													<a href="dashboard-crm.html" class="waves-effect waves-dark">
+													<a href="promotions.php" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Promotions</span>
 													</a>
 												</li>

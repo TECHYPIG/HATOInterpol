@@ -1,18 +1,127 @@
 <?php
    include('getinfo.php');
+   if (array_key_exists("notify", $_GET)) {
+    $notify =  $_GET['notify'];
+    if(!empty($notify)){
+        $query = "SELECT * FROM `tbl_members` WHERE id='".mysqli_real_escape_string($link, $notify)."'";
+        $result = mysqli_query($link, $query);
+        $row = mysqli_fetch_array($result);
 
-   if (array_key_exists("demote", $_GET)) {
-    $demotion =  $_GET['demote'];
-    if(!empty($demotion)){
-        $query = "UPDATE tbl_members SET promotions = 0 WHERE id=('".mysqli_real_escape_string($link, $demotion)."');";
-        mysqli_query($link, $query);
-    }
-}
-if (array_key_exists("promote", $_GET)) {
-    $promotion =  $_GET['promote'];
-    if(!empty($promotion)){
-        $query = "UPDATE tbl_members SET promotions = 1 WHERE id=('".mysqli_real_escape_string($link, $promotion)."');";
-        mysqli_query($link, $query);
+// Replace the URL with your own webhook url
+$url = "https://discordapp.com/api/webhooks/722290349141131294/JbR4tdAz0DN4tkxKq7KoMQoHsdt_6ckQLmLK1X6ysfvjdCdslZvbSv1XCrMniuHT1Uya";
+
+$hookObject = json_encode([
+    /*
+     * The general "message" shown above your embeds
+     */
+    "content" => "Activity Warning!",
+    /*
+     * The username shown in the message
+     */
+    "username" => "GTA | HATO",
+    /*
+     * The image location for the senders image
+     */
+    "avatar_url" => "https://i.imgur.com/jsG61mQ.png",
+    /*
+     * Whether or not to read the message in Text-to-speech
+     */
+    "tts" => false,
+    /*
+     * File contents to send to upload a file
+     */
+    // "file" => "",
+    /*
+     * An array of Embeds
+     */
+    "embeds" => [
+        /*
+         * Our first embed
+         */
+        [
+            // Set the title for your embed
+            "title" => "".$row['username']."",
+
+            // The type of your embed, will ALWAYS be "rich"
+            "type" => "rich",
+
+            // A description for your embed
+            "description" => "Your HATO hours are lower than they should be. Please increase your hours as soon as possible to avoid getting demoted/kicked. Your hours are shown below:",
+
+            // The URL of where your title will be a link to
+            "url" => "",
+
+            /* A timestamp to be displayed below the embed, IE for when an an article was posted
+             * This must be formatted as ISO8601
+             */
+            "timestamp" => "",
+
+            // The integer color to be used on the left side of the embed
+            "color" => hexdec( "E06666" ),
+
+            // Footer object
+            "footer" => [
+                "text" => "",
+                "icon_url" => ""
+            ],
+
+            // Image object
+            "image" => [
+                "url" => ""
+            ],
+
+            // Thumbnail object
+            "thumbnail" => [
+                "url" => ""
+            ],
+
+            // Author object
+            "author" => [
+                "name" => "GrandTheftArma",
+                "url" => "https://grandtheftarma.com/"
+            ],
+
+            // Field array of objects
+            "fields" => [
+                // Field 1
+                [
+                    "name" => "05/06/2020",
+                    "value" => "24",
+                    "inline" => true
+                ],
+                // Field 2
+                [
+                    "name" => "28/05/2020",
+                    "value" => "46",
+                    "inline" => true
+                ],
+                // Field 3
+                [
+                    "name" => "07/05/2020",
+                    "value" => "72",
+                    "inline" => true
+                ]
+            ]
+        ]
+    ]
+
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+$ch = curl_init();
+
+curl_setopt_array( $ch, [
+    CURLOPT_URL => $url,
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => $hookObject,
+    CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json"
+    ]
+]);
+
+$response = curl_exec( $ch );
+curl_close( $ch );
+
+
     }
 }
    ?>
@@ -82,7 +191,7 @@ if (array_key_exists("promote", $_GET)) {
                      <div class="page-wrapper">
                         <div class="page-body">
                            <div class="row">
-                                 <div class="col-xl-8 col-md-6">
+                                 <div class="col-xl-12 col-md-6">
                                     <div class="card table-card">
                                        <div class="card-header">
                                           <h5>Members</h5>
@@ -107,12 +216,12 @@ if (array_key_exists("promote", $_GET)) {
                                                       <th>HPM</th>
                                                       <th>Last Promo</th>
                                                       <th>Warning Points</th>
-                                                      <th>Promote/Demote</th>
+                                                      <th>Notify</th>
                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                $query = "SELECT * FROM `tbl_members` WHERE active='1'";
+                                                $query = "SELECT * FROM `tbl_members` WHERE active='1' AND hpm<'5'";
                                                 $result = mysqli_query($link, $query);
                                                 while($query2=mysqli_fetch_array($result))
                                                 {
@@ -122,70 +231,17 @@ if (array_key_exists("promote", $_GET)) {
                                                     echo "<td></td>";
                                                     echo "<td>".$query2['last_promo']."</td>";
                                                     echo "<td></td>";
-                                                    echo "<td><a href='promotions.php?promote=".$query2['id']."'><i class='icon feather icon-edit f-w-600 f-16 m-r-15 text-c-green'></i></a><a href='promotions.php?demote=".$query2['id']."'><i class='feather icon-trash-2 f-w-600 f-16 text-c-red'></i></a></td>
+                                                    echo "<td><a href='lowactivity.php?notify=".$query2['id']."'>Notify</a></td>
                                                    </tr>";
                                                 }
                                                 ?>
-
-                                                   
                                                 </tbody>
                                              </table>
                                           </div>
                                        </div>
                                        </div>
                                  </div>
-                                 <div class="col-xl-4 col-md-6">
-													<div class="card latest-update-card">
-														<div class="card-header">
-															<h5>Upcoming Promotions</h5>
-															<div class="card-header-right">
-																<ul class="list-unstyled card-option">
-																	<li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
-																	<li><i class="feather icon-maximize full-card"></i></li>
-																	<li><i class="feather icon-minus minimize-card"></i></li>
-																	<li><i class="feather icon-refresh-cw reload-card"></i></li>
-																	<li><i class="feather icon-trash close-card"></i></li>
-																	<li><i class="feather icon-chevron-left open-card-option"></i></li>
-																</ul>
-															</div>
-														</div>
-														<div class="card-block">
-															<div class="scroll-widget">
-																<div class="latest-update-box">
-                                                                <?php
-                                                                    $query = "SELECT * FROM `tbl_members` WHERE promotions='1'";
-                                                                    $result = mysqli_query($link, $query);
-                                                                    while($query2=mysqli_fetch_array($result))
-                                                                    {
-                                                                        echo "<div class='row p-b-30'>
-																		<div class='col-auto text-right update-meta p-r-0'>";
-                                                                        echo "<img src='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/15/15297df118970822e37933cc13249a9d98828ea7_full.jpg' alt='user image' class='img-radius img-40 align-top m-r-15 update-icon'>";
-                                                                        echo "</div>
-																		<div class='col p-l-5'>";
-                                                                        echo "<a href='#!'>";
-                                                                        echo "<h6>".$query2['username']."</h6></a>";
-                                                                        echo "<td></td>";
-                                                                        echo "<p class='text-muted m-b-0'>".$query2['steamid']."</p>";
-                                                                        echo "<p class='text-muted m-b-0'>".$query2['rank']."</p>
-                                                                        </div>
-                                                                        </div>";
-                                                                    }
-                                                                    ?>
-                                                                    
-																	
-																			
-																		
-																				
-																			
-																			
-																		
-                                                                    
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-                                            </div>
+                                 
                            </div>
                         </div>
                      </div>
