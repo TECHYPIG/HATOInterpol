@@ -1,7 +1,7 @@
 <nav class="navbar header-navbar pcoded-header">
 					<div class="navbar-wrapper">
 						<div class="navbar-logo" style="background-color: #FF9444;">
-							<a href="index.php">
+							<a href="dashboard.php">
 							<img class="img-fluid" src="png/logo.png" alt="Theme-Logo" />
 							</a>
 							<a class="mobile-menu" id="mobile-collapse" href="#!">
@@ -49,7 +49,7 @@
 												</a>
 											</li>
 											<li>
-												<a href="auth-sign-in-social.html">
+												<a href="logout.php">
 												<i class="feather icon-log-out"></i> Logout
 												</a>
 											</li>
@@ -68,7 +68,7 @@
 									<div class="pcoded-navigation-label">Navigation</div>
 									<ul class="pcoded-item pcoded-left-item">
 										<li class="">
-											<a href="index.php" class="waves-effect waves-dark">
+											<a href="dashboard.php" class="waves-effect waves-dark">
 											<span class="pcoded-micon">
 											<i class="feather icon-home"></i>
 											</span>
@@ -81,33 +81,41 @@
 											<span class="pcoded-mtext">Public Documents</span>
 											</a>
 											<ul class="pcoded-submenu">
+											<li class="">
+													<a href="https://sites.google.com/view/hato-handbook/home" class="waves-effect waves-dark">
+													<span class="pcoded-mtext">HATO Handbook</span>
+													</a>
+												</li>
 												<li class="">
-													<a href="index.html" class="waves-effect waves-dark">
+													<a href="https://docs.google.com/spreadsheets/d/16FtbX2x1KvC4nNUgFNMt95bf6nXmNyDz1b9Tp6Bc0sE/preview#gid=1138938433" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Public Roster</span>
 													</a>
 												</li>
 												<li class="">
-													<a href="dashboard-crm.html" class="waves-effect waves-dark">
+													<a href="https://docs.google.com/spreadsheets/d/16FtbX2x1KvC4nNUgFNMt95bf6nXmNyDz1b9Tp6Bc0sE/preview#gid=1249444206" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Public Blacklist</span>
 													</a>
 												</li>
 												<li class="">
-													<a href="dashboard-crm.html" class="waves-effect waves-dark">
+													<a href="https://docs.google.com/forms/d/e/1FAIpQLSemQ2qGL8rH8o4c55tIzkjUf1irLUqAXiBBWMmalp06BleOFg/viewform" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Public UnBlacklist</span>
 													</a>
 												</li>
 												<li class="">
-													<a href="dashboard-crm.html" class="waves-effect waves-dark">
-													<span class="pcoded-mtext">RTO Applications Status</span>
+													<a href="https://docs.google.com/forms/d/e/1FAIpQLSdVy_yA1I16LXhgxFW7oNgJn6RJPgLmNeAma5NqitO2iA7OIA/viewform" class="waves-effect waves-dark">
+													<span class="pcoded-mtext">LOA Form</span>
 													</a>
 												</li>
 											</ul>
 										</li>
 									</ul>
+									<?php
+									if ($rank == 2 ||$rank == 3||$rank == 4 ){
+										echo '
 									<div class="pcoded-navigation-label">Recruitment & Training Officers</div>
 									<ul class="pcoded-item pcoded-left-item">
 										<li class="">
-											<a href="index.html" class="waves-effect waves-dark">
+											<a href="rtointerpol.php" class="waves-effect waves-dark">
 											<span class="pcoded-micon">
 											<i class="feather icon-server"></i>
 											</span>
@@ -121,7 +129,7 @@
 											</a>
 											<ul class="pcoded-submenu">
 												<li class="">
-													<a href="index.html" class="waves-effect waves-dark">
+													<a href="phaseone.php" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Phase 1</span>
 													</a>
 												</li>
@@ -133,7 +141,7 @@
 											</ul>
 										</li>
 										<li class="">
-											<a href="index.html" class="waves-effect waves-dark">
+											<a href="meeting.php" class="waves-effect waves-dark">
 											<span class="pcoded-micon">
 											<i class="feather icon-calendar"></i>
 											</span>
@@ -148,11 +156,14 @@
 											<span class="pcoded-mtext">RTO Logs</span>
 											</a>
 										</li>
-									</ul>
+									</ul>  '; }?>
+									<?php
+									if ($rank == 3||$rank == 4){
+										echo '
 									<div class="pcoded-navigation-label">Head Recruitment & Training Officer</div>
 									<ul class="pcoded-item pcoded-left-item">
 										<li class="">
-											<a href="index.html" class="waves-effect waves-dark">
+											<a href="hrtointerpol.php" class="waves-effect waves-dark">
 											<span class="pcoded-micon">
 											<i class="feather icon-pie-chart"></i>
 											</span>
@@ -185,7 +196,10 @@
 												</li>
 											</ul>
 										</li>
-									</ul>
+									</ul> '; }?>
+									<?php 
+									if ($rank == 4){
+									echo '
 									<div class="pcoded-navigation-label">Management Team</div>
 									<ul class="pcoded-item pcoded-left-item">
 										<li class="pcoded-hasmenu">
@@ -195,12 +209,12 @@
 											</a>
 											<ul class="pcoded-submenu">
 												<li class="">
-													<a href="members.html" class="waves-effect waves-dark">
+													<a href="members.php" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Members</span>
 													</a>
 												</li>
 												<li class="">
-													<a href="veterans.html" class="waves-effect waves-dark">
+													<a href="veterans.php" class="waves-effect waves-dark">
 													<span class="pcoded-mtext">Veterans</span>
 													</a>
 												</li>
@@ -237,9 +251,18 @@
 													<span class="pcoded-mtext">Promotions</span>
 													</a>
 												</li>
+												
 											</ul>
 										</li>
+										<li class="">
+													<a href="announcements.php" class="waves-effect waves-dark">
+													<span class="pcoded-micon">
+													<i class="feather icon-pie-chart"></i>
+													</span>
+													<span class="pcoded-mtext">Announcements</span>
+													</a>
+												</li>
 									</ul>
-								</div>
+								</div> ';}?>
 							</div> 
 						</nav>
